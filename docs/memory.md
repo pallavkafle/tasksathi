@@ -1,79 +1,58 @@
-# Memory: TaskSathi (living project state)
+# Memory: TaskSathi (my notes)
 
-**Update protocol:** every AI appends to this file at the end of each task (state, decisions, lessons) and the user commits it. Read this file first in any new chat, then `rule.md`, then `task.md`.
+## About me and the project
+- I'm Pallav Kafle, a Computer Engineering student at Himalaya College of Engineering (TU). MERN and generative AI. Goal: AI Engineer.
+- TaskSathi replaces my deployed expense tracker (`Expense-Tracker`, stays live as the "before"). It is my main portfolio project.
+- I'm also building TrailMind (my major project, CT 707), so time is limited: about 10 to 12 hours a week.
+- Repo: `C:\D_Drive_Backup\PROJECTS\tasksathi`, GitHub `pallavkafle/tasksathi`. Windows, VS Code, PowerShell.
 
-## 1. Who and why
-- Pallav Kafle, Computer Engineering student (Himalaya College of Engineering, TU, Nepal). MERN + generative AI. Goal: AI Engineer.
-- TaskSathi is the flagship hiring portfolio project, a rebuild of his deployed v1 `github.com/pallavkafle/Expense-Tracker` (stays live untouched as the "before").
-- Also building the TrailMind Android major project in parallel, so the time budget is ~10-12 hrs/week.
-- Communication preference: direct, informal, brief, fast; tables and concise code. Does not want files or content he did not ask for.
+## Current state
+- **Done on `main`:** monorepo tooling, shared contract, CI (green, a deliberate type error failed it as expected), Express 5 skeleton (`3d39d59`), Next.js scaffold (`e88f418`).
+- **Next:** review the web scaffold, set up Atlas, then the user model and auth.
+- **Known gaps from the skeleton:** `express.json` runs before the rate limiter and `trust proxy` is fixed at 1. Both change in task 1.8.
+- **Skeleton test results (2026-11-15):** `/health` 200; JSON 404 in the contract shape; CORS allowed for `localhost:3000` and blocked for an unknown origin; bad JSON gives 400; a bad `PORT` exits with a clear message; with the limit set to 3 the responses were 404, 404, 404, 429, 429 and `/health` stayed 200.
+- **Installed versions:** see `rule.md` section 4.
 
-## 2. Team setup
-- **Primary Claude (Lane A):** api, shared contract, CI. Owns the contract.
-- **deepsheek (Lane B):** web app. Also acts as reviewer of Lane A diffs.
-- Pallav runs both AIs in parallel and relays between them. Both read these docs.
+## Key decisions
 
-## 3. Current state (update this section each task)
-- **Last commit:** `58372c1` on `main`, pushed. Day 1 complete, 18 files, working tree clean.
-- **Repo:** `C:\D_Drive_Backup\PROJECTS\tasksathi`, GitHub `pallavkafle/tasksathi`.
-- **Next (sequential):** P0 prep (includes `.editorconfig`), then C0, C1, A1, B1, then Atlas setup, A2, A3, B2, B3. See `task.md`.
-- **Not done yet:** Atlas cluster, Gemini key, old Atlas password rotation, Render and Vercel accounts.
-- **Never run:** the deliberate type-error negative test (CI on Day 2 will cover it).
+| Decision | Reason |
+|---|---|
+| Fresh repo, old tracker untouched | The stack changes in every file |
+| Web-first installable PWA | A recruiter can open a link; TrailMind already covers Android |
+| Next.js and Express as separate apps | Streaming, long jobs, a future mobile client |
+| Same-origin API through Next.js rewrites (`SameSite=Lax` cookie, `Path=/api/auth`) | Third-party cookies fail on Safari and Firefox across Vercel and Render |
+| Shared package exports raw TypeScript | Fast cross-package development; `transpilePackages` for web, `tsup` for the API build |
+| Express 5 | Async errors reach the handler; `req.query` is read-only, so validation uses `req.valid` |
+| Refresh grace window, default 10 s, from env | Two tabs refreshing at once must not log me out |
+| Argon2id at 19456 KiB, t=2, p=1, concurrency cap 2; refresh tokens use sha256 | The Render free container has 512 MB RAM and 0.1 CPU |
+| No mock API for the web client | Mocks hide cookie, proxy and refresh bugs |
+| PWA is installable only in v1 | Service-worker caching of RSC payloads breaks navigation |
+| 768-dimension embeddings, one chunk collection, async re-embedding | Atlas M0 limits; saves must not depend on the LLM |
+| Embedded subtasks, 3 roles (owner, member, viewer) | Less complexity in v1 |
+| Agent: 2 tools, version checks, TTL, idempotency key, role re-check | Stale proposals must not corrupt data |
+| Replay evals on every PR, live evals on demand, no LLM judge | Free-tier quota and run-to-run variance |
+| Models, IDs and limits from env and the AI Studio console | Providers change them without notice |
+| No Python service in v1 | Scope; the README covers the Python-heavy job market |
+| Squash merge for every PR | One commit per task on `main` |
 
-## 4. Installed versions (do not upgrade without a reason)
-Node 22.16.0, Git 2.46.2.windows.1, pnpm 12.18.0 (via `npm i -g pnpm`), TypeScript 6.0.3 (pinned `~6.0.3`), ESLint 10.14.0, typescript-eslint 8.72.2, Prettier 3.10.1, @eslint/js 10.0.1, eslint-config-prettier 10.1.8, Zod 4.6.7, tsx 4.23.15, @types/node 26.6.6 (to be pinned to `~22`).
+## Lessons
 
-## 5. Decisions log
+| Problem | Fix |
+|---|---|
+| `corepack enable` failed (EPERM) | Use `npm i -g pnpm` |
+| `npm.ps1` blocked | `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` |
+| Pasting several commands broke PowerShell | One command, Enter, wait |
+| `pnpm add typescript` pulled 7.0.2 | Pin `typescript@~6.0.0` |
+| `ERR_PNPM_IGNORED_BUILDS: esbuild` | `allowBuilds` in `pnpm-workspace.yaml` |
+| Stray empty file in `apps/api` | Check `git status` and the file list before committing |
+| Merged a PR normally instead of squashing and clicked Revert on it | Closed the revert PR, deleted the extra branches; use Squash and merge only |
+| Typo in a branch name | `git branch -m` before the first push |
 
-| # | Decision | Reason |
-|---|---|---|
-| 1 | Fresh repo, v1 untouched | Stack change touches every file; stronger v1 to v2 story |
-| 2 | Name TaskSathi | Simple, understandable, Nepali identity. npm name free; only minor unrelated GitHub repos share it |
-| 3 | Web-first installable PWA | Recruiter clicks a link; TrailMind already shows Android work |
-| 4 | Next.js + Express (separate), both TypeScript | Streaming UI; API suits long jobs and a future mobile client |
-| 5 | Gemini free tier behind a provider-agnostic `llm/` layer | Free-first; swap providers via config |
-| 6 | `@tasksathi/shared` exports raw `.ts` | Instant cross-package dev; needs `transpilePackages` on web and `tsup` for the API prod build |
-| 7 | API prod build uses tsup, not tsc | shared lives outside the API `rootDir`, so tsc breaks |
-| 8 | Express 5 | Async error handling built in; routes use `/*splat` |
-| 9 | Parallel lanes from Day 2, not Day 6 | API and web touch different folders; the contract is frozen first |
-| 10 | Dark emerald-black default theme + light | Matches Pallav's portfolio brand |
-| 11 | `.npmrc` skipped | pnpm 8+ already defaults `auto-install-peers=true` |
-| 12 | `moduleResolution: "Bundler"` kept | NodeNext would force `.js` import extensions |
-| 13 | Execution is sequential by default; parallel only when a lane is blocked externally (reverses decision 9) | The user is the only typist, so two lanes add context switching. Folder ownership and contract-first stay |
-| 14 | No mock adapter and no `_stub` routes; real auth (A3) lands before the web client (B3) | A mock would hide cookie, CORS, refresh and error-shape bugs. Stub routes would be throwaway code |
-| 15 | Refresh tokens get a 10 s grace window; reuse inside it rotates again in the same family, reuse after it revokes the family | Two tabs refreshing at once must not log the user out. Only hashes are stored, so the old token cannot be re-returned |
-| 16 | Next lint rules kept: `eslint-plugin-react-hooks` and `@next/eslint-plugin-next` in the root config, scoped to `apps/web/**` | Keeps one ESLint command without losing hooks and Next rules. Must check ESLint 10 compatibility |
-| 17 | Line endings via `.gitattributes` + root `.editorconfig` | Stops CRLF churn on Windows without editing user-level VS Code settings |
-| 18 | API returns `id` (never `_id`), `/health` exempt from rate limiting, `details` is `Array<{path, message}>` | Removes client-side mapping and keeps uptime monitors from getting 429 |
-| 19 | Next.js: use the current stable major, not 15 (record the exact version after install) | Next 15 hit end of life on 21 Oct 2026. Async `params` and `cookies()` are written from the start. Verify Next supports TS 6.0 and ESLint 10 before pinning anything |
-| 20 | Web tsconfig is generated by Next, plus `noUncheckedIndexedAccess: true` added manually | Avoids fighting Next's own tsconfig handling while keeping the strictness rule |
-| 21 | Client single-flight refresh spec lives in `architecture.md` section 5; `lib/api.ts` requires cross-review before merge | It is the only client-side token refresh; a bug means false logouts or a token leak |
-
-## 6. Errors hit on Day 1 and their lessons
-
-| # | Error | Fix | Lesson |
-|---|---|---|---|
-| E1 | `corepack enable` EPERM on `C:\Program Files\nodejs\pnpm` | Used `npm i -g pnpm` | Do not use corepack on Windows without admin |
-| E2 | `npm.ps1 cannot be loaded because running scripts is disabled` | `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` | Needed once per user |
-| E3 | Pasting 4 commands at once caused PowerShell `>>` continuation parse errors | Ctrl+C, one command at a time | One command, Enter, wait |
-| E4 | `pnpm add typescript` pulled 7.0.2; typescript-eslint rejects it | `pnpm add -Dw typescript@~6.0.0` (landed 6.0.3) | Use `~` not `^` for TypeScript |
-| E5 | `ERR_PNPM_IGNORED_BUILDS: esbuild` | `allowBuilds: { esbuild: true }` in `pnpm-workspace.yaml` | `onlyBuiltDependencies` is gone; list native postinstalls (argon2, bcrypt, sharp) under `allowBuilds` |
-| E6 | Stray empty `apps\api\index.ts` from a right-click | Deleted before commit | Run the file-listing sanity check in `rule.md` before each commit |
-| E7 | Negative type-error test skipped | Deferred to CI on Day 2 | Prove the tooling can fail, not just pass |
-
-## 7. Deferred items (do not forget)
-- **Day 2 (B1):** `transpilePackages: ["@tasksathi/shared"]` in `next.config.ts`; append `&& tsc -p apps/web/tsconfig.json` to the root `typecheck` script.
-- **Day 7 (A5):** API prod build with tsup (`noExternal: ["@tasksathi/shared"]`), `start: node dist/index.js`, Render build `pnpm install --prod=false && pnpm --filter @tasksathi/api build`.
-- **Watch:** if Node API type errors appear, confirm `@types/node` is pinned to `~22`. If lint flags `z.string().email()` (Zod 4 deprecation), switch to `z.email()`; do not change preemptively.
-- **Week 3:** verify current Gemini model IDs and the "Gemini Decision 1" console entry; test whether Gemma matches Flash Lite on structured JSON.
-- **Cookie gotcha (Day 6-7):** prod needs `sameSite=none; secure` plus CORS `credentials: true` because Vercel and Render are separate domains.
-- **Render cold start:** ~50 s after idle; add a wake screen and optional keep-alive ping.
-- **Security:** rotate the old leaked Atlas password; never reuse that DB user.
-
-## 8. Open questions
-- None blocking. Contract changes go through Pallav and the primary AI.
-
-## 9. Change log
-- 2026-11-13: planning done; name TaskSathi chosen; web-first PWA decided.
-- 2026-11-14: Day 1 scaffold complete (`58372c1`); parallel-lane plan and these docs created.
-- 2026-11-14: deepsheek review merged: sequential by default, no mock, grace window, Next lint plugins, `.editorconfig`, contract clarifications (decisions 13-18). Docs updated.
+## Open items
+- **Name check:** open `tasksathi.xyz` and `tasksathi.com`, search "Task Sathi" on LinkedIn and the Nepal company registry, and check `npm view tasksathi` and GitHub. I cannot confirm that a Kathmandu company with this name exists. Keep the name unless a live product in the same space turns up. If I rename, only the `@tasksathi/*` scope and the docs change.
+- **Atlas:** create the free cluster with a new DB user, keep the connection string only in `apps/api/.env`, delete or rotate the old leaked credentials. Check the search-index and connection limits in the Atlas UI.
+- **Gemini:** create the API key (env only). Check model IDs and limits in AI Studio before Phase 3.
+- **Accounts:** connect Render and Vercel to GitHub before the first deploy.
+- **TrailMind:** decide how much time it gets during the 5 weeks (maintenance only is the plan).
+- **Design:** pick the dashboard direction from my design experiments and turn it into tokens in `design.md`.
+- **Verify later:** SSE through the Vercel rewrite; `req.ip` and `TRUST_PROXY_HOPS` behind Vercel and Render; whether Gemma handles structured JSON as well as Flash Lite.
