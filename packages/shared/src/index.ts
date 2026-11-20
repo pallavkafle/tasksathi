@@ -1,4 +1,4 @@
-export const APP_NAME = "TaskSathi";
+export const APP_NAME = "TaskSight";
 
 export * from "./errors";
 export * from "./auth";

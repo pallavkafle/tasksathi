@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { registerSchema, type RegisterInput, type ApiError } from "@tasksathi/shared";
+import { registerSchema, type RegisterInput, type ApiError } from "@tasksight/shared";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -42,7 +42,7 @@ export default function RegisterPage() {
       return;
     }
 
-    setSuccess(`Account would be created for ${data.email} (mock — real API in task 1.11)`);
+    setSuccess(`Account would be created for ${data.email} (mock â€” real API in task 1.11)`);
     reset();
   }
 
@@ -50,7 +50,7 @@ export default function RegisterPage() {
     <Card>
       <CardHeader>
         <CardTitle className="text-2xl">Create your account</CardTitle>
-        <CardDescription>Start organizing with TaskSathi</CardDescription>
+        <CardDescription>Start organizing with TaskSight</CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <CardContent className="space-y-4">

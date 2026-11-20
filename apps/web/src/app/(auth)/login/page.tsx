@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema, type LoginInput, type ApiError } from "@tasksathi/shared";
+import { loginSchema, type LoginInput, type ApiError } from "@tasksight/shared";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -44,7 +44,7 @@ export default function LoginPage() {
       return;
     }
 
-    setSuccess(`Signed in as ${data.email} (mock — real API in task 1.11)`);
+    setSuccess(`Signed in as ${data.email} (mock â€” real API in task 1.11)`);
     reset();
   }
 

@@ -1,4 +1,4 @@
-import { ERROR_STATUS, type ErrorCode, type ErrorDetail } from "@tasksathi/shared";
+import { ERROR_STATUS, type ErrorCode, type ErrorDetail } from "@tasksight/shared";
 
 // Throw this anywhere in the API. The central handler turns it into the contract error shape.
 export class AppError extends Error {

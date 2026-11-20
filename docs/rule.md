@@ -1,4 +1,4 @@
-# Rules: TaskSathi
+# Rules: TaskSight
 
 All working rules live in this file.
 
@@ -49,7 +49,7 @@ Node 22.16.0, pnpm 12.18.0, TypeScript ~6.0.3 (use `~`; typescript-eslint 8.x do
 
 ## 6. Security
 - Secrets live only in env files. `.env` is gitignored; `.env.example` holds placeholders. No keys or connection strings in chat, issues or commits.
-- Use a new Atlas DB user for TaskSathi. Delete or rotate the old leaked credentials.
+- Use a new Atlas DB user for TaskSight. Delete or rotate the old leaked credentials.
 - Never return raw errors or stack traces. Use the API error shape.
 - helmet, a CORS origin allowlist, rate limits (strictest on `/auth/*` and `/ai/*`), `Cache-Control: no-store` on API responses, and an exact `TRUST_PROXY_HOPS`.
 - Access token in memory only. Refresh token: httpOnly cookie, stored hashed, rotated, with reuse detection.

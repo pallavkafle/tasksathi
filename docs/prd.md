@@ -1,12 +1,12 @@
-# PRD: TaskSathi
+# PRD: TaskSight
 
-**Tagline:** TaskSathi, your AI task companion. (Sathi / साथी means companion in Nepali.)
+**Tagline:** TaskSight — clarity into what matters.
 **Owner:** Pallav Kafle, Computer Engineering, Himalaya College of Engineering (TU), Nepal
 
 ## 1. Overview
-TaskSathi is an AI-powered task management web app. You type a sentence and get a task, ask questions about your workspace and get cited answers, and approve AI-proposed changes before anything is written.
+TaskSight is an AI-powered task management web app. You type a sentence and get a task, ask questions about your workspace and get cited answers, and approve AI-proposed changes before anything is written.
 
-It replaces my deployed MERN expense tracker (`Expense-Tracker`), which was a tutorial-level project and stays live as the "before". TaskSathi is my main portfolio project for AI Engineer roles.
+It replaces my deployed MERN expense tracker (`Expense-Tracker`), which was a tutorial-level project and stays live as the "before". TaskSight is my main portfolio project for AI Engineer roles.
 
 ## 2. Goals
 

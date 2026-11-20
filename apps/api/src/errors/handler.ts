@@ -1,5 +1,5 @@
 import type { ErrorRequestHandler, RequestHandler } from "express";
-import type { ApiError } from "@tasksathi/shared";
+import type { ApiError } from "@tasksight/shared";
 import { AppError } from "./AppError";
 
 // Runs when no route matched

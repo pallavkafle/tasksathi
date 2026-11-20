@@ -1,5 +1,5 @@
 import { Router } from "express";
-import type { HealthResponse } from "@tasksathi/shared";
+import type { HealthResponse } from "@tasksight/shared";
 import { env } from "../config/env";
 
 export const healthRouter = Router();

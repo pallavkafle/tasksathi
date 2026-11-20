@@ -1,4 +1,4 @@
-import { APP_NAME } from "@tasksathi/shared";
+import { APP_NAME } from "@tasksight/shared";
 
 export default function Home() {
   return (

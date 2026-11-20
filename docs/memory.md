@@ -1,10 +1,10 @@
-# Memory: TaskSathi (my notes)
+# Memory: TaskSight (my notes)
 
 ## About me and the project
 - I'm Pallav Kafle, a Computer Engineering student at Himalaya College of Engineering (TU). MERN and generative AI. Goal: AI Engineer.
-- TaskSathi replaces my deployed expense tracker (`Expense-Tracker`, stays live as the "before"). It is my main portfolio project.
+- TaskSight replaces my deployed expense tracker (`Expense-Tracker`, stays live as the "before"). It is my main portfolio project.
 - I'm also building TrailMind (my major project, CT 707), so time is limited: about 10 to 12 hours a week.
-- Repo: `C:\D_Drive_Backup\PROJECTS\tasksathi`, GitHub `pallavkafle/tasksathi`. Windows, VS Code, PowerShell.
+- Repo: C:\D_Drive_Backup\PROJECTS\tasksathi (folder still tasksathi; rename to tasksight pending) · GitHub pallavkafle/tasksathi (repo rename pending). Windows, VS Code, PowerShell. Project name: TaskSight (renamed 2026-11-20, verified available on GitHub/npm/domain).
 
 ## Current state
 - **Done on `main`:** monorepo tooling, shared contract, CI (green, a deliberate type error failed it as expected), Express 5 skeleton (`3d39d59`), Next.js scaffold (`e88f418`).
@@ -49,7 +49,7 @@
 | Typo in a branch name | `git branch -m` before the first push |
 
 ## Open items
-- **Name check:** open `tasksathi.xyz` and `tasksathi.com`, search "Task Sathi" on LinkedIn and the Nepal company registry, and check `npm view tasksathi` and GitHub. I cannot confirm that a Kathmandu company with this name exists. Keep the name unless a live product in the same space turns up. If I rename, only the `@tasksathi/*` scope and the docs change.
+- **Name check:** open `TaskSight.xyz` and `TaskSight.com`, search "Task Sathi" on LinkedIn and the Nepal company registry, and check `npm view TaskSight` and GitHub. I cannot confirm that a Kathmandu company with this name exists. Keep the name unless a live product in the same space turns up. If I rename, only the `@tasksight/*` scope and the docs change.
 - **Atlas:** create the free cluster with a new DB user, keep the connection string only in `apps/api/.env`, delete or rotate the old leaked credentials. Check the search-index and connection limits in the Atlas UI.
 - **Gemini:** create the API key (env only). Check model IDs and limits in AI Studio before Phase 3.
 - **Accounts:** connect Render and Vercel to GitHub before the first deploy.

@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "TaskSathi",
-  description: "TaskSathi — your AI task companion.",
+  title: "TaskSight",
+  description: "TaskSight â€” your AI task companion.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

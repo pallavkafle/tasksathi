@@ -1,5 +1,5 @@
 {
-  "name": "@tasksathi/api",
+  "name": "@tasksight/api",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -14,7 +14,7 @@
     "tsx": "^4.23.15"
   },
   "dependencies": {
-    "@tasksathi/shared": "workspace:*",
+    "@tasksight/shared": "workspace:*",
     "cors": "^2.8.6",
     "express": "^5.3.0",
     "express-rate-limit": "^8.7.4",

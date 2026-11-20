@@ -1,4 +1,4 @@
-# Design: TaskSathi
+# Design: TaskSight
 
 Implemented by Lane B in `apps/web`.
 
@@ -57,4 +57,4 @@ shadcn base: Button, Input, Card, Dialog, DropdownMenu, Tabs, Badge, Toast, Skel
 Installable only: web manifest and icons. No offline caching in v1. A later service worker may cache static assets only, with `/api/*` and React Server Component requests kept network-only, because caching them by URL serves broken payloads. Push notifications and voice input come later.
 
 ## 8. Branding
-Name: TaskSathi. Tagline: "your AI task companion". The README explains the name: Sathi (साथी) means companion in Nepali.
+Name: TaskSight. Tagline: "your AI task companion". The README explains the name: Sathi (à¤¸à¤¾à¤¥à¥€) means companion in Nepali.

@@ -1,4 +1,4 @@
-# Architecture: TaskSathi
+# Architecture: TaskSight
 
 ## 1. Stack
 
@@ -17,7 +17,7 @@ The API is separate from Next.js to support long jobs, streaming and a future mo
 
 ## 2. Repo layout (pnpm monorepo)
 ```
-tasksathi/
+TaskSight/
   apps/
     api/        Express (Lane A)
       src/
@@ -36,10 +36,10 @@ tasksathi/
   docs/         prd, architecture, design, rule, task, memory
 ```
 
-`@tasksathi/shared` exports raw TypeScript (`exports: "./src/index.ts"`):
+`@tasksight/shared` exports raw TypeScript (`exports: "./src/index.ts"`):
 - The API runs it with `tsx` in development.
 - The web app lists it in `transpilePackages`.
-- The API production build uses `tsup` with `noExternal: ["@tasksathi/shared"]`, because `tsc` cannot compile a package outside the API `rootDir`.
+- The API production build uses `tsup` with `noExternal: ["@tasksight/shared"]`, because `tsc` cannot compile a package outside the API `rootDir`.
 - `shared` is isomorphic: no Node built-ins, no Mongoose, no server-only imports.
 
 ## 3. Same-origin API
@@ -179,6 +179,6 @@ Live runs use free-tier quota and vary between runs, so PRs replay recorded resp
 - mongodb-memory-server cannot run `$vectorSearch`. Vector queries sit behind a repository interface; CI uses a fake, and real retrieval is tested locally against the dev Atlas cluster or `mongodb-atlas-local` (indexing lags by several seconds after seeding).
 
 ## 12. Deployment
-- **API (Render free tier):** 512 MB RAM, 0.1 CPU, sleeps after 15 minutes idle, about a minute to wake, 750 free hours per month. Build `pnpm install --prod=false && pnpm --filter @tasksathi/api build`; start `node dist/index.js`. Env: `NODE_ENV`, `PORT`, `APP_VERSION`, `CORS_ORIGIN`, `TRUST_PROXY_HOPS`, `MONGODB_URI`, `JWT_ACCESS_SECRET`, `JWT_REFRESH_SECRET`, `REFRESH_TOKEN_TTL_DAYS`, `REFRESH_GRACE_SECONDS`, rate-limit values, LLM keys and model IDs.
+- **API (Render free tier):** 512 MB RAM, 0.1 CPU, sleeps after 15 minutes idle, about a minute to wake, 750 free hours per month. Build `pnpm install --prod=false && pnpm --filter @tasksight/api build`; start `node dist/index.js`. Env: `NODE_ENV`, `PORT`, `APP_VERSION`, `CORS_ORIGIN`, `TRUST_PROXY_HOPS`, `MONGODB_URI`, `JWT_ACCESS_SECRET`, `JWT_REFRESH_SECRET`, `REFRESH_TOKEN_TTL_DAYS`, `REFRESH_GRACE_SECONDS`, rate-limit values, LLM keys and model IDs.
 - **Web (Vercel):** `API_ORIGIN` env var for the rewrite, and a correctly spelled `vercel.json`.
 - **Atlas:** allow `0.0.0.0/0` only at deploy time, with a strong password. An idle M0 cluster can pause, so confirm it is active before a demo.

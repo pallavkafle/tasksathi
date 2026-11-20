@@ -1,12 +1,12 @@
-# Tasks: TaskSathi
+# Tasks: TaskSight
 
 Lane A owns `apps/api`, `packages/shared` and CI. Lane B owns `apps/web`. "Manual" means setup I do myself.
 
-## Phase 1 – Foundations & Auth
+## Phase 1 â€“ Foundations & Auth
 
 ### 1.1 Monorepo scaffold and tooling (Lane A)
 pnpm workspace with `apps/api`, `apps/web`, `packages/shared`. Root scripts for lint, typecheck, format and format:check. TypeScript strict with `noUncheckedIndexedAccess`, ESLint flat config, Prettier, `.gitignore` (`.env` ignored, `.env.example` kept), `.gitattributes`, `.editorconfig`, `packageManager` and `engines` in the root `package.json`, `esbuild` under `allowBuilds`, `@types/node` pinned to `~22`, and the six docs in `docs/`.
-**Done when:** `pnpm install`, `pnpm lint`, `pnpm typecheck` and `pnpm format:check` pass, and the API imports from `@tasksathi/shared` and runs under `tsx`.
+**Done when:** `pnpm install`, `pnpm lint`, `pnpm typecheck` and `pnpm format:check` pass, and the API imports from `@tasksight/shared` and runs under `tsx`.
 
 ### 1.2 Shared contract (Lane A)
 In `packages/shared`: error codes with their HTTP statuses and the error schema (`details` as `Array<{path, message}>`), plus the auth schemas: trimmed lowercase email, password 8 to 128 characters, name 1 to 80, register, login, user (`id`, `name`, `email`), auth response, me response, health response.
@@ -21,11 +21,11 @@ Zod-validated env, Pino logger that redacts the authorization header and cookies
 **Done when:** `/health` returns 200 with `status`, `uptime`, `version`; an unknown route returns a 404 in the error shape; CORS headers appear only for allowed origins; malformed JSON returns 400 `VALIDATION_ERROR`; an invalid `PORT` exits with a clear message; with the limit set to 3 the fourth request returns 429 and `/health` still returns 200.
 
 ### 1.5 Web scaffold (Lane B)
-Next.js 16.4.6 in `apps/web` (App Router, TypeScript, Tailwind, `src` directory). Delete `apps/web/.gitkeep` before generating. Add `@tasksathi/shared` as `workspace:*` and `transpilePackages: ["@tasksathi/shared"]`. Use the generated `apps/web/tsconfig.json` and add `noUncheckedIndexedAccess`. Add `eslint-plugin-react-hooks` and `@next/eslint-plugin-next` to the root ESLint config, scoped to `apps/web/**` (check ESLint 10 and TypeScript 6 support on install; do not downgrade either). Add the web tsconfig to the root `typecheck` script only after the file exists. Initialize shadcn and add the dark and light theme tokens from `design.md`.
+Next.js 16.4.6 in `apps/web` (App Router, TypeScript, Tailwind, `src` directory). Delete `apps/web/.gitkeep` before generating. Add `@tasksight/shared` as `workspace:*` and `transpilePackages: ["@tasksight/shared"]`. Use the generated `apps/web/tsconfig.json` and add `noUncheckedIndexedAccess`. Add `eslint-plugin-react-hooks` and `@next/eslint-plugin-next` to the root ESLint config, scoped to `apps/web/**` (check ESLint 10 and TypeScript 6 support on install; do not downgrade either). Add the web tsconfig to the root `typecheck` script only after the file exists. Initialize shadcn and add the dark and light theme tokens from `design.md`.
 **Done when:** the dev server renders a page that imports `APP_NAME` from shared, and `pnpm lint`, `pnpm typecheck` and `pnpm format:check` pass.
 
 ### 1.6 Accounts and infrastructure setup (Manual)
-Check the name: open `tasksathi.xyz` and `tasksathi.com`, search the name on LinkedIn and the Nepal company registry, run `npm view tasksathi`, search GitHub. Create the Atlas M0 cluster with a new DB user, allow my current IP, and store the connection string in `apps/api/.env` as `MONGODB_URI`. Delete or rotate the old leaked Atlas credentials. Note the search-index limit, connection limit and MongoDB version shown in the Atlas UI. Create the Gemini API key (env only) and note the model IDs and limits in the AI Studio console. Connect Render and Vercel to GitHub.
+Check the name: open `TaskSight.xyz` and `TaskSight.com`, search the name on LinkedIn and the Nepal company registry, run `npm view TaskSight`, search GitHub. Create the Atlas M0 cluster with a new DB user, allow my current IP, and store the connection string in `apps/api/.env` as `MONGODB_URI`. Delete or rotate the old leaked Atlas credentials. Note the search-index limit, connection limit and MongoDB version shown in the Atlas UI. Create the Gemini API key (env only) and note the model IDs and limits in the AI Studio console. Connect Render and Vercel to GitHub.
 **Done when:** the name check result is written in `memory.md`, the cluster is active, `.env` is not tracked by git, the old credentials are gone, and the Render and Vercel projects can see the repo.
 
 ### 1.7 User model and database connection (Lane A)
@@ -56,7 +56,7 @@ Run the whole auth flow in the browser and check the cookie in dev tools (`HttpO
 Deploy the API to Render and the web app to Vercel. Build config comes from task 4.1; use a minimal version now if needed. Set `API_ORIGIN`, `CORS_ORIGIN`, `TRUST_PROXY_HOPS` and the auth secrets. Allow `0.0.0.0/0` in Atlas network access with a strong DB password.
 **Done when:** register, login, refresh and logout work on the live URLs.
 
-## Phase 2 – Core Product
+## Phase 2 â€“ Core Product
 
 ### 2.1 Workspaces and RBAC (Lane A)
 `Workspace` and `WorkspaceMember` models. Routes to create and list workspaces, add a member by email, change a role and remove a member. Roles: owner, member, viewer. A `requireRole` middleware used on every workspace route. The last owner cannot demote themselves or leave.
@@ -86,7 +86,7 @@ Greeting, stats cards with sparklines, weekly progress chart, in-progress cards 
 Run the whole product as a new user: register, create a workspace, invite a second user, create and move tasks, check roles.
 **Done when:** a second person can use it without help and no role check can be bypassed from the UI or the API.
 
-## Phase 3 – AI Features
+## Phase 3 â€“ AI Features
 
 ### 3.1 LLM module (Lane A)
 `llm/` with a provider interface, token-bucket limiter (limits from env), retry with exponential backoff and jitter, a response cache keyed by prompt hash and model, a per-user quota, a cached-sample fallback and an `AiLog` write on every call. Model IDs come from env (`gemini-3.1-flash-lite`, `gemini-embedding-2`).
@@ -144,10 +144,10 @@ Streaming conversation view with clickable citation chips that open the cited ta
 Usage view with calls, tokens, estimated cost and p95 latency per feature.
 **Done when:** the numbers match the usage endpoint.
 
-## Phase 4 – Deployment, Polish & Portfolio
+## Phase 4 â€“ Deployment, Polish & Portfolio
 
 ### 4.1 Production API build (Lane A)
-`apps/api/tsup.config.ts` with `noExternal: ["@tasksathi/shared"]`, scripts `build: "tsup"` and `start: "node dist/index.js"`, Render build command `pnpm install --prod=false && pnpm --filter @tasksathi/api build`, and a `.env.example` listing every variable.
+`apps/api/tsup.config.ts` with `noExternal: ["@tasksight/shared"]`, scripts `build: "tsup"` and `start: "node dist/index.js"`, Render build command `pnpm install --prod=false && pnpm --filter @tasksight/api build`, and a `.env.example` listing every variable.
 **Done when:** the production build runs locally with production env values and `/health` responds.
 
 ### 4.2 Production deploy and proxy verification (Lane A + B)
