@@ -4,7 +4,7 @@
 - I'm Pallav Kafle, a Computer Engineering student at Himalaya College of Engineering (TU). MERN and generative AI. Goal: AI Engineer.
 - TaskSight replaces my deployed expense tracker (`Expense-Tracker`, stays live as the "before"). It is my main portfolio project.
 - I'm also building TrailMind (my major project, CT 707), so time is limited: about 10 to 12 hours a week.
-- Repo: C:\D_Drive_Backup\PROJECTS\tasksathi (folder still tasksathi; rename to tasksight pending) · GitHub pallavkafle/tasksathi (repo rename pending). Windows, VS Code, PowerShell. Project name: TaskSight (renamed 2026-11-20, verified available on GitHub/npm/domain).
+- Repo: C:\D_Drive_Backup\PROJECTS\tasksight · GitHub pallavkafle/tasksight. Windows, VS Code, PowerShell. Project name: TaskSight (renamed 2026-11-20 from TaskSathi after verifying GitHub/npm/domain availability).
 
 ## Current state
 - **Done on `main`:** monorepo tooling, shared contract, CI (green, a deliberate type error failed it as expected), Express 5 skeleton (`3d39d59`), Next.js scaffold (`e88f418`).
